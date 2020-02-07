@@ -331,6 +331,20 @@ classdef lineScan
                 floor(obj.expParams.baselineStart/obj.imagingParams.scanlinePeriod):...
                 floor(obj.expParams.baselineEnd/obj.imagingParams.scanlinePeriod)));
         end
+        
+        function [peak,tau] = decayFit(obj,trace)
+            
+            
+            %             [~, offset] = max(trace);
+            %             offset = 1;
+            decay = fit((1:length(trace(1:end)))',...
+                trace(1:end)',...
+                'exp1');
+            
+            
+            peak = decay.a;
+            tau = decay.b;
+        end
                 
         function index = time2index(obj,time)
             % Returns the array index closest to a specified time 
