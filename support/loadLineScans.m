@@ -6,9 +6,15 @@ function scans = loadLineScans(scan_file_names)
 if nargin == 0
     dirs = {};
     dirs = uipickfiles();
+    
+    if isempty(dirs) || isequal(dirs,0) % return empty if no dirs are selected
+        scans = [];
+        return
+    end
     counter = 1;
+    f = waitbar(0,['Loading linescans 0/' num2str(length(dirs))]);
     for i=1:length(dirs)
-
+        waitbar(i/length(dirs),f, ['Loading linescans ' num2str(i) '/' num2str(length(dirs))])
         if isdir(dirs{i}) == 1
             try
                 scans(counter) = lineScan(dirs{i});
@@ -31,6 +37,7 @@ if nargin == 0
             end
         end
     end
+    close(f)
 else
     counter = 1;
     for i=1:length(scan_file_names)
